@@ -1,0 +1,192 @@
+================================================================================
+  HOOMFIX APP — GUÍA DE INSTALACIÓN Y REFERENCIA
+================================================================================
+
+DESCRIPCIÓN
+-----------
+App móvil de emergencias del hogar Hoomfix. Permite a clientes solicitar
+técnicos verificados (plomería, electricidad, cerrajería, gas, redes) y a
+técnicos recibir y gestionar solicitudes en tiempo real.
+
+
+CÓMO SE CREÓ EL PROYECTO
+--------------------------
+npx create-expo-app hoomfix-app --template blank-typescript
+# Luego se instalaron dependencias adicionales manualmente
+
+# NativeWind v4 (Tailwind para React Native)
+npm install nativewind tailwindcss
+npm install --legacy-peer-deps  # si hay conflictos de peer deps
+
+# Navegación y routing
+# expo-router ya incluido con Expo 56+
+
+# Storage seguro
+npx expo install expo-secure-store @react-native-async-storage/async-storage
+
+# Otras dependencias instaladas con:
+npx expo install expo-image-picker expo-document-picker expo-av
+npx expo install expo-linear-gradient expo-web-browser
+npx expo install react-native-safe-area-context react-native-screens
+npm install axios socket.io-client lucide-react-native
+
+
+TECNOLOGÍAS PRINCIPALES
+------------------------
+- React Native 0.85  → framework móvil
+- Expo SDK 56        → plataforma de desarrollo y builds
+- TypeScript 6       → lenguaje
+- Expo Router 56     → navegación basada en archivos (como Next.js)
+- NativeWind v4      → Tailwind CSS para React Native
+- Tailwind CSS 4     → sistema de estilos
+- Axios              → cliente HTTP para la API
+- Socket.io-client   → WebSockets para chat en tiempo real
+- expo-secure-store  → almacenamiento seguro del token JWT (nativo)
+- AsyncStorage       → almacenamiento del token en web
+- react-native-agora → llamadas de voz y video
+- expo-image-picker  → selección de imágenes
+- lucide-react-native → iconos
+- react-native-toast-message → notificaciones visuales
+
+
+ESTRUCTURA DE CARPETAS
+-----------------------
+hoomfix-app/
+├── app/                         ← rutas de Expo Router (solo import + export)
+│   ├── _layout.tsx              ← AuthProvider + Stack navigator + guard de roles
+│   ├── index.tsx                ← redirect a /(auth)/login
+│   ├── (auth)/
+│   │   ├── _layout.tsx
+│   │   ├── login.tsx            ← import LoginScreen; export default LoginScreen
+│   │   └── register.tsx
+│   ├── (client)/
+│   │   ├── _layout.tsx
+│   │   ├── home.tsx
+│   │   └── search.tsx
+│   └── (technician)/
+│       ├── _layout.tsx
+│       └── dashboard.tsx
+├── src/
+│   ├── features/                ← lógica real de cada módulo
+│   │   ├── auth/
+│   │   │   ├── api/authApi.ts   ← llamadas al backend de auth
+│   │   │   ├── components/      ← componentes reutilizables de auth
+│   │   │   ├── hooks/           ← hooks específicos de auth
+│   │   │   ├── screens/
+│   │   │   │   ├── LoginScreen.tsx
+│   │   │   │   └── RegisterScreen.tsx
+│   │   │   └── types/index.ts   ← User, AuthResponse
+│   │   ├── client/
+│   │   │   └── screens/HomeScreen.tsx
+│   │   ├── services/
+│   │   │   └── screens/SearchScreen.tsx
+│   │   └── technician/
+│   │       └── screens/DashboardScreen.tsx
+│   ├── api/
+│   │   ├── client.ts            ← instancia Axios con interceptor JWT
+│   │   └── auth.ts              ← re-exporta desde features/auth (compatibilidad)
+│   ├── context/
+│   │   └── AuthContext.tsx      ← estado global de sesión (token + user)
+│   ├── storage/
+│   │   └── authStorage.ts       ← SecureStore (nativo) / AsyncStorage (web)
+│   ├── hooks/
+│   │   └── useSocket.ts         ← conexión WebSocket con auth token
+│   └── config.ts                ← API_URL, AGORA_APP_ID, Google client IDs
+├── global.css                   ← @tailwind base/components/utilities
+├── tailwind.config.js           ← NativeWind preset, cubre app/ y src/
+├── babel.config.js              ← NativeWind babel preset
+├── metro.config.js              ← withNativeWind wrapping
+├── app.json                     ← configuración de la app (nombre, slug, permisos)
+└── .env                         ← variables de entorno públicas
+
+
+ARQUITECTURA — PATRÓN FEATURE-BASED
+--------------------------------------
+Los archivos en app/ son delgados: solo importan y re-exportan la pantalla real.
+Toda la lógica vive en src/features/<nombre>/.
+
+Ejemplo:
+  app/(auth)/login.tsx  →  2 líneas:
+    import LoginScreen from "../../src/features/auth/screens/LoginScreen";
+    export default LoginScreen;
+
+  src/features/auth/screens/LoginScreen.tsx  →  lógica completa
+
+Cada feature tiene las carpetas: api/ components/ hooks/ screens/ types/
+
+
+VARIABLES DE ENTORNO (.env)
+-----------------------------
+EXPO_PUBLIC_API_URL=http://192.168.100.9:4000
+EXPO_PUBLIC_API_URL_NATIVE=http://192.168.100.9:4000
+EXPO_PUBLIC_AGORA_APP_ID=
+EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=
+EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=
+
+NOTA: En Expo, las variables deben empezar con EXPO_PUBLIC_ para ser accesibles
+en el código del cliente. Se leen desde src/config.ts.
+
+
+INSTALACIÓN DESDE CERO
+------------------------
+# 1. Instalar dependencias
+npm install
+# Si hay errores de peer deps:
+npm install --legacy-peer-deps
+
+# 2. Correr en desarrollo
+npm start               → menú interactivo (presiona a para Android, i para iOS)
+npm run android         → abrir directamente en Android
+npm run ios             → abrir directamente en iOS (solo Mac)
+npm run web             → abrir en navegador
+
+# 3. Para correr en dispositivo físico
+# Instalar Expo Go en el teléfono y escanear el QR que aparece en consola
+
+
+COMANDOS ÚTILES
+----------------
+npm start                    → inicia el servidor de desarrollo
+npm run android              → corre en emulador/dispositivo Android
+npx expo prebuild            → genera carpetas android/ e ios/ (para builds nativos)
+npx expo build               → build de producción (requiere cuenta Expo/EAS)
+npx eas build --platform android → build APK/AAB con EAS
+
+
+FLUJO DE AUTENTICACIÓN
+------------------------
+1. App inicia → _layout.tsx hidrata el token desde SecureStore/AsyncStorage
+2. Si hay token → redirige según user.role (CLIENT → /(client)/home, TECHNICIAN → /(technician)/dashboard)
+3. Si no hay token → redirige a /(auth)/login
+4. Al hacer login/register → se guarda token + user en storage → AuthContext se actualiza
+5. Axios interceptor → añade Authorization: Bearer <token> en cada request
+6. Si el server responde 401 → se limpia storage y se redirige al login
+
+AGORA — LLAMADAS DE VOZ Y VIDEO
+---------------------------------
+Librería:  react-native-agora ^4.5.4
+Variable:  EXPO_PUBLIC_AGORA_APP_ID=  (llenar en .env con tu App ID de Agora)
+
+Flujo:
+  1. Cliente solicita un token RTC al backend (endpoint pendiente: GET /calls/token)
+  2. El backend genera el token con agora-token usando el App ID + App Certificate
+  3. La app se une al canal con el token → llamada en tiempo real
+  4. Al terminar, la app llama a leaveChannel() y notifica al backend
+
+Pantalla pendiente de crear:
+  src/features/calls/screens/CallScreen.tsx
+
+Consola Agora: https://console.agora.io
+  → Crear proyecto → copiar App ID y App Certificate
+
+
+NOTAS IMPORTANTES
+------------------
+1. NativeWind v4 requiere babel.config.js con jsxImportSource: "nativewind"
+2. Las clases de Tailwind en RN se pasan igual que en web (className="...")
+3. El token se guarda en SecureStore (nativo) o AsyncStorage (web/Expo Go)
+4. EXPO_PUBLIC_API_URL_NATIVE permite usar una IP diferente para dispositivos físicos
+5. useSocket.ts se conecta al backend con websocket transport y el JWT en auth
+6. El guard de roles en _layout.tsx evita que un técnico entre a pantallas de cliente
+
+================================================================================
