@@ -1,44 +1,50 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { useRouter } from "expo-router";
-import { useAuth } from "../../../context/AuthContext";
-
-const CATEGORIES = [
-  { id: "PLUMBING", label: "Plomería", emoji: "🔧" },
-  { id: "ELECTRICITY", label: "Electricidad", emoji: "⚡" },
-  { id: "LOCKSMITH", label: "Cerrajería", emoji: "🔑" },
-  { id: "GAS", label: "Gas", emoji: "🔥" },
-  { id: "NETWORK", label: "Internet / Redes", emoji: "📶" },
-];
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useAuth } from '@/context/AuthContext';
 
 export default function HomeScreen() {
-  const router = useRouter();
   const { user, logout } = useAuth();
 
+  const firstName = user?.profile?.firstName ?? user?.username ?? 'Usuario';
+
   return (
-    <ScrollView className="flex-1 bg-gray-50">
-      <View className="bg-orange-500 px-6 pt-14 pb-8">
-        <Text className="text-white text-sm">Hola, {user?.name} 👋</Text>
-        <Text className="text-white text-2xl font-bold mt-1">¿Qué emergencia tienes?</Text>
+    <ScrollView className="flex-1 bg-[#F8FAFC]">
+      <View className="bg-[#2563EB] px-6 pt-14 pb-10">
+        <Text className="text-blue-200 text-sm">Bienvenido a</Text>
+        <Text className="text-white text-3xl font-bold mt-1">
+          Hoom<Text className="text-[#F97316]">fix</Text>
+        </Text>
+        <Text className="text-white text-xl font-semibold mt-4">
+          Hola, {firstName} 👋
+        </Text>
+        <Text className="text-blue-200 mt-1">
+          Tu cuenta está lista. Pronto podrás solicitar técnicos verificados.
+        </Text>
       </View>
 
-      <View className="px-6 mt-6">
-        <Text className="text-gray-700 font-semibold text-base mb-4">Categorías</Text>
-        <View className="flex-row flex-wrap gap-3">
-          {CATEGORIES.map((cat) => (
-            <TouchableOpacity
-              key={cat.id}
-              className="bg-white rounded-2xl p-4 w-[47%] items-center shadow-sm border border-gray-100"
-              onPress={() => router.push({ pathname: "/(client)/search", params: { category: cat.id } })}
-            >
-              <Text className="text-4xl mb-2">{cat.emoji}</Text>
-              <Text className="text-gray-800 font-semibold text-sm">{cat.label}</Text>
-            </TouchableOpacity>
-          ))}
+      <View className="px-6 mt-8">
+        <View className="bg-white rounded-2xl p-6 border border-[#E2E8F0]">
+          <Text className="text-[#0F172A] font-bold text-lg mb-1">Estamos construyendo algo increíble</Text>
+          <Text className="text-[#64748B] text-sm leading-5">
+            La app está en desarrollo. Muy pronto podrás solicitar técnicos de plomería,
+            electricidad, cerrajería y más — en minutos.
+          </Text>
+        </View>
+
+        <View className="bg-white rounded-2xl p-6 border border-[#E2E8F0] mt-4">
+          <Text className="text-[#0F172A] font-semibold mb-3">Tu cuenta</Text>
+          <View className="flex-row justify-between mb-2">
+            <Text className="text-[#64748B] text-sm">Usuario</Text>
+            <Text className="text-[#0F172A] text-sm font-medium">@{user?.username}</Text>
+          </View>
+          <View className="flex-row justify-between">
+            <Text className="text-[#64748B] text-sm">Email</Text>
+            <Text className="text-[#0F172A] text-sm font-medium">{user?.email ?? '—'}</Text>
+          </View>
         </View>
       </View>
 
-      <TouchableOpacity className="mx-6 mt-8 mb-4" onPress={logout}>
-        <Text className="text-center text-gray-400 text-sm">Cerrar sesión</Text>
+      <TouchableOpacity className="mx-6 mt-8 mb-10" onPress={logout}>
+        <Text className="text-center text-[#64748B] text-sm">Cerrar sesión</Text>
       </TouchableOpacity>
     </ScrollView>
   );

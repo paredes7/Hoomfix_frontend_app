@@ -1,67 +1,64 @@
-import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
-import { useRouter } from "expo-router";
-import { loginApi } from "../api/authApi";
-import { useAuth } from "../../../context/AuthContext";
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useLogin } from '@/features/auth/hooks/useLogin';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Logo } from '@/components/ui/Logo';
 
 export default function LoginScreen() {
   const router = useRouter();
-  const { setSession } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  async function handleLogin() {
-    if (!email || !password) return Alert.alert("Completa todos los campos");
-    setLoading(true);
-    try {
-      const { access_token, user } = await loginApi(email.trim(), password);
-      await setSession(access_token, user);
-    } catch {
-      Alert.alert("Error", "Email o contraseña incorrectos");
-    } finally {
-      setLoading(false);
-    }
-  }
+  const { form, errors, loading, apiError, setField, handleLogin } = useLogin();
 
   return (
-    <View className="flex-1 bg-white px-6 justify-center">
-      <Text className="text-3xl font-bold text-gray-900 mb-2">Hoomfix</Text>
-      <Text className="text-gray-500 mb-8">Técnicos verificados en minutos</Text>
-
-      <TextInput
-        className="border border-gray-200 rounded-xl px-4 py-3 mb-4 text-gray-900"
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TextInput
-        className="border border-gray-200 rounded-xl px-4 py-3 mb-6 text-gray-900"
-        placeholder="Contraseña"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-
-      <TouchableOpacity
-        className="bg-orange-500 rounded-xl py-4 items-center mb-4"
-        onPress={handleLogin}
-        disabled={loading}
+    <KeyboardAvoidingView
+      className="flex-1 bg-[#F8FAFC]"
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
       >
-        {loading ? (
-          <ActivityIndicator color="white" />
-        ) : (
-          <Text className="text-white font-bold text-base">Iniciar sesión</Text>
-        )}
-      </TouchableOpacity>
+        <View className="flex-1 px-6 pt-20 pb-10">
+          <Logo />
 
-      <TouchableOpacity onPress={() => router.push("/(auth)/register")}>
-        <Text className="text-center text-gray-500">
-          ¿No tienes cuenta? <Text className="text-orange-500 font-semibold">Regístrate</Text>
-        </Text>
-      </TouchableOpacity>
-    </View>
+          <Text className="text-2xl font-bold text-[#0F172A] mb-2">Bienvenido</Text>
+          <Text className="text-[#64748B] mb-8">Inicia sesión para continuar</Text>
+
+          <Input
+            label="Email, usuario o teléfono"
+            placeholder="ejemplo@correo.com"
+            value={form.identifier}
+            onChangeText={(v) => setField('identifier', v)}
+            error={errors.identifier}
+            keyboardType="email-address"
+          />
+
+          <Input
+            label="Contraseña"
+            placeholder="••••••"
+            value={form.password}
+            onChangeText={(v) => setField('password', v)}
+            error={errors.password}
+            isPassword
+          />
+
+          {apiError && (
+            <Text className="text-[#EF4444] text-sm mb-4 text-center">{apiError}</Text>
+          )}
+
+          <Button label="Iniciar sesión" onPress={handleLogin} loading={loading} />
+
+          <View className="flex-row justify-center mt-6">
+            <Text className="text-[#64748B]">¿No tienes cuenta? </Text>
+            <Text
+              className="text-[#2563EB] font-semibold"
+              onPress={() => router.push('/(auth)/register')}
+            >
+              Regístrate
+            </Text>
+          </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

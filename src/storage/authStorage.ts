@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
+import type { User } from "@/features/auth/types/user.types";
 
 const ACCESS_TOKEN_KEY = "hoomfix.accessToken";
 const USER_KEY = "hoomfix.user";
@@ -28,7 +29,7 @@ export async function removeAccessToken() {
   await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
 }
 
-export async function setUser(user: object) {
+export async function setUser(user: User) {
   await AsyncStorage.setItem(USER_KEY, JSON.stringify(user));
 }
 

@@ -7,12 +7,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "android": {
       "softwareKeyboardLayoutMode": "resize",
       "package": "com.hoomfix.app",
@@ -20,7 +14,6 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
       "permissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.CAMERA",
@@ -42,7 +35,9 @@
     ],
     "extra": {
       "router": {},
-      "eas": {}
+      "eas": {
+        "projectId": "fb3056fb-3f8e-4474-967f-7b0df28073f0"
+      }
     }
   }
 }

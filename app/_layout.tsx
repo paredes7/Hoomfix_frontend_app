@@ -13,15 +13,14 @@ function RootNavigator() {
     if (!isHydrated) return;
 
     const inAuth = segments[0] === "(auth)";
+    const inOnboarding = segments[0] === "(auth)" && segments[1] === "onboarding";
 
     if (!user && !inAuth) {
       router.replace("/(auth)/login");
-    } else if (user && inAuth) {
-      if (user.role === "TECHNICIAN") {
-        router.replace("/(technician)/dashboard");
-      } else {
-        router.replace("/(client)/home");
-      }
+    } else if (user && !user.isOnboardingComplete && !inOnboarding) {
+      router.replace("/(auth)/onboarding");
+    } else if (user && user.isOnboardingComplete && inAuth) {
+      router.replace("/(client)/home");
     }
   }, [user, isHydrated, segments]);
 
@@ -29,7 +28,6 @@ function RootNavigator() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(auth)" />
       <Stack.Screen name="(client)" />
-      <Stack.Screen name="(technician)" />
     </Stack>
   );
 }
