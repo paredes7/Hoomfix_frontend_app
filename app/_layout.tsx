@@ -1,8 +1,15 @@
 import { useEffect } from "react";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import * as Sentry from "@sentry/react-native";
 import "../global.css";
 import { AuthProvider, useAuth } from "../src/context/AuthContext";
+
+Sentry.init({
+  dsn: "https://00e3ae8b4a022f8708fa2eff45002d80@o4511572849459200.ingest.us.sentry.io/4511572863352832",
+  sendDefaultPii: true,
+  enableLogs: true,
+});
 
 function RootNavigator() {
   const { user, isHydrated } = useAuth();
@@ -13,7 +20,7 @@ function RootNavigator() {
     if (!isHydrated) return;
 
     const inAuth = segments[0] === "(auth)";
-    const inOnboarding = segments[0] === "(auth)" && segments[1] === "onboarding";
+    const inOnboarding = segments[0] === "(auth)" && (segments as string[])[1] === "onboarding";
 
     if (!user && !inAuth) {
       router.replace("/(auth)/login");
@@ -32,7 +39,7 @@ function RootNavigator() {
   );
 }
 
-export default function RootLayout() {
+function RootLayout() {
   return (
     <AuthProvider>
       <StatusBar style="dark" />
@@ -40,3 +47,5 @@ export default function RootLayout() {
     </AuthProvider>
   );
 }
+
+export default Sentry.wrap(RootLayout);
