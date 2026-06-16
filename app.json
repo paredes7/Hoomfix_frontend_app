@@ -39,7 +39,8 @@
           "project": "react-native",
           "organization": "pds-tecnologies"
         }
-      ]
+      ],
+      "@sentry/react-native"
     ],
     "extra": {
       "router": {},
