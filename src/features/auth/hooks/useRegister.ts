@@ -8,6 +8,7 @@ type FormState = {
   username: string;
   countryIso: string;
   password: string;
+  confirmPassword?: string;
 };
 
 type Errors = Partial<FormState>;
@@ -21,6 +22,7 @@ export function useRegister() {
     username: '',
     countryIso: 'BO',
     password: '',
+    confirmPassword: '',
   });
   const [errors, setErrors] = useState<Errors>({});
   const [loading, setLoading] = useState(false);
@@ -42,6 +44,8 @@ export function useRegister() {
     if (!form.countryIso.trim()) newErrors.countryIso = 'Selecciona tu país';
     if (!form.password.trim()) newErrors.password = 'Ingresa una contraseña';
     else if (form.password.length < 6) newErrors.password = 'Mínimo 6 caracteres';
+    if (!form.confirmPassword?.trim()) newErrors.confirmPassword = 'Confirma tu contraseña';
+    else if (form.password !== form.confirmPassword) newErrors.confirmPassword = 'Las contraseñas no coinciden';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }

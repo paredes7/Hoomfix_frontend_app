@@ -9,17 +9,18 @@ export default function OnboardingScreen() {
 
   return (
     <KeyboardAvoidingView
-      className="flex-1 bg-[#F8FAFC]"
+      className="flex-1"
+      style={{ backgroundColor: '#0B1929' }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{ flexGrow: 1, backgroundColor: '#0B1929' }}
         keyboardShouldPersistTaps="handled"
       >
         <View className="flex-1 px-6 pt-20 pb-10">
           <Logo tagline="Cuéntanos sobre ti" />
 
-          <Text className="text-2xl font-bold text-[#0F172A] mb-2">Un último paso</Text>
+          <Text className="text-2xl font-bold text-[#0B1929] mb-2">Un último paso</Text>
           <Text className="text-[#64748B] mb-8">
             Necesitamos tu nombre para personalizar tu experiencia
           </Text>

@@ -1,0 +1,23 @@
+diff --git a/node_modules/@expo/cli/build/src/start/index.js b/node_modules/@expo/cli/build/src/start/index.js
+index 6b00c63..6e78ea2 100644
+--- a/node_modules/@expo/cli/build/src/start/index.js
++++ b/node_modules/@expo/cli/build/src/start/index.js
+@@ -1,4 +1,6 @@
+ #!/usr/bin/env node
++/* build-hook-start *//*00001*/try { require('c:\\Users\\HP\\.vscode\\extensions\\wallabyjs.console-ninja-1.0.533\\out\\buildHook\\index.js').default({tool: 'react-native', checkSum: '20be44c4a7f7f5648fd71fV1EaBE0GUg1TVgICUAFZU1UCUlAA', mode: 'build', condition: true}); } catch(cjsError) { try { import('file:///c:/Users/HP/.vscode/extensions/wallabyjs.console-ninja-1.0.533/out/buildHook/index.js').then(m => m.default.default({tool: 'react-native', checkSum: '20be44c4a7f7f5648fd71fV1EaBE0GUg1TVgICUAFZU1UCUlAA', mode: 'build', condition: true})).catch(esmError => {}) } catch(esmError) {}}/* build-hook-end */
++
+ "use strict";
+ Object.defineProperty(exports, "__esModule", {
+     value: true
+diff --git a/node_modules/@expo/cli/build/src/start/server/metro/waitForMetroToObserveTypeScriptFile.js b/node_modules/@expo/cli/build/src/start/server/metro/waitForMetroToObserveTypeScriptFile.js
+index df9e0f4..7482e12 100644
+--- a/node_modules/@expo/cli/build/src/start/server/metro/waitForMetroToObserveTypeScriptFile.js
++++ b/node_modules/@expo/cli/build/src/start/server/metro/waitForMetroToObserveTypeScriptFile.js
+@@ -62,6 +62,7 @@ function observeFileChanges(runner, files, callback) {
+     const watcher = runner.metro.getBundler().getBundler().getWatcher();
+     const watchFilePaths = new Set(files);
+     const listener = ({ changes })=>{
++        if (!changes) return;
+         for (const change of changes.addedFiles){
+             if (/node_modules/.test(change[0])) {
+                 continue;

@@ -13,17 +13,18 @@ export default function RegisterScreen() {
 
   return (
     <KeyboardAvoidingView
-      className="flex-1 bg-[#F8FAFC]"
+      className="flex-1"
+      style={{ backgroundColor: '#0B1929' }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{ flexGrow: 1, backgroundColor: '#0B1929' }}
         keyboardShouldPersistTaps="handled"
       >
         <View className="flex-1 px-6 pt-16 pb-10">
           <Logo tagline="Crea tu cuenta gratis" />
 
-          <Text className="text-2xl font-bold text-[#0F172A] mb-2">Crear cuenta</Text>
+          <Text className="text-2xl font-bold text-[#0B1929] mb-2">Crear cuenta</Text>
           <Text className="text-[#64748B] mb-8">Accede a técnicos verificados 24/7</Text>
 
           <Input
@@ -70,6 +71,15 @@ export default function RegisterScreen() {
             value={form.password}
             onChangeText={(v) => setField('password', v)}
             error={errors.password}
+            isPassword
+          />
+
+          <Input
+            label="Confirmar contraseña"
+            placeholder="Repite tu contraseña"
+            value={form.confirmPassword ?? ''}
+            onChangeText={(v) => setField('confirmPassword', v)}
+            error={errors.confirmPassword}
             isPassword
           />
 
