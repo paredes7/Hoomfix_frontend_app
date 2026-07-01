@@ -35,11 +35,11 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView
       className="flex-1"
-      style={{ backgroundColor: '#0B1929' }}
+      style={{ backgroundColor: '#060F1E' }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, backgroundColor: '#0B1929' }}
+        contentContainerStyle={{ flexGrow: 1, backgroundColor: '#060F1E' }}
         keyboardShouldPersistTaps="handled"
       >
         <View className="flex-1 px-6 pt-20 pb-10">

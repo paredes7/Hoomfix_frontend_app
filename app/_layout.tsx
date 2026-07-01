@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import * as Sentry from "@sentry/react-native";
 import "../global.css";
 import { AuthProvider, useAuth } from "../src/context/AuthContext";
+import { ActiveProfileProvider } from "../src/context/ActiveProfileContext";
 
 Sentry.init({
   dsn: "https://00e3ae8b4a022f8708fa2eff45002d80@o4511572849459200.ingest.us.sentry.io/4511572863352832",
@@ -41,10 +42,12 @@ function RootNavigator() {
 
 function RootLayout() {
   return (
-    <AuthProvider>
-      <StatusBar style="dark" />
-      <RootNavigator />
-    </AuthProvider>
+    <ActiveProfileProvider>
+      <AuthProvider>
+        <StatusBar style="dark" />
+        <RootNavigator />
+      </AuthProvider>
+    </ActiveProfileProvider>
   );
 }
 

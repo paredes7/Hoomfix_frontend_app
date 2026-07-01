@@ -64,7 +64,7 @@ export function useRegister() {
       });
       await setSession(access_token, user);
       if (!user.isOnboardingComplete) {
-        router.replace('/(auth)/onboarding');
+        router.push('/(auth)/onboarding');
       } else {
         router.replace('/(client)/home');
       }

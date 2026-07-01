@@ -1,0 +1,1 @@
+export type ProviderProfileStatus = 'PENDING' | 'APPROVED' | 'REJECTED';

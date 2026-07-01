@@ -4,17 +4,21 @@ import { Eye, EyeOff } from 'lucide-react-native';
 
 type Props = TextInputProps & {
   label?: string;
+  hint?: string;
   error?: string;
   isPassword?: boolean;
 };
 
-export function Input({ label, error, isPassword = false, ...props }: Props) {
+export function Input({ label, hint, error, isPassword = false, ...props }: Props) {
   const [visible, setVisible] = useState(false);
 
   return (
     <View className="mb-4">
       {label && (
-        <Text className="text-[#94A3B8] font-medium mb-1.5 text-sm tracking-wide">{label}</Text>
+        <Text className="text-[#94A3B8] font-medium mb-1 text-sm tracking-wide">{label}</Text>
+      )}
+      {hint && (
+        <Text className="text-[#475569] text-xs mb-1.5 leading-4">{hint}</Text>
       )}
 
       <View

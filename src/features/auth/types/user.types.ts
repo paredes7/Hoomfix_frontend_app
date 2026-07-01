@@ -19,6 +19,11 @@ export type Profile = {
   wallet?: Wallet;
 };
 
+export type Country = {
+  iso: string;
+  name: string;
+};
+
 export type User = {
   id: string;
   email: string | null;
@@ -27,4 +32,5 @@ export type User = {
   isActive: boolean;
   isOnboardingComplete: boolean;
   profile: Profile | null;
+  country: Country | null;
 };

@@ -14,17 +14,17 @@ export default function RegisterScreen() {
   return (
     <KeyboardAvoidingView
       className="flex-1"
-      style={{ backgroundColor: '#0B1929' }}
+      style={{ backgroundColor: '#060F1E' }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, backgroundColor: '#0B1929' }}
+        contentContainerStyle={{ flexGrow: 1, backgroundColor: '#060F1E' }}
         keyboardShouldPersistTaps="handled"
       >
         <View className="flex-1 px-6 pt-16 pb-10">
           <Logo tagline="Crea tu cuenta gratis" />
 
-          <Text className="text-2xl font-bold text-[#0B1929] mb-2">Crear cuenta</Text>
+          <Text className="text-2xl font-bold text-[#060F1E] mb-2">Crear cuenta</Text>
           <Text className="text-[#64748B] mb-8">Accede a técnicos verificados 24/7</Text>
 
           <Input
